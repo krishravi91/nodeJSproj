@@ -65,7 +65,7 @@ app.post("/movies", express.json(), async (request, response) => {
                   .insertMany(data);
     response.send(result);
 });
-
+//11
 app.get("/movies/:id",  async(request, response) => {
 const {id} = request.params;
 const movie = await client
