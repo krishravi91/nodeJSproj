@@ -63,7 +63,7 @@ app.post("/movies", express.json(), async (request, response) => {
                   .db("demo")
                   .collection("movies")
                   .insertMany(data);
-    response.send(result);
+    response.send(result);//comment
 });
 //11
 app.get("/movies/:id",  async(request, response) => {
