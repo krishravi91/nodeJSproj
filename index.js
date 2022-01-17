@@ -32,7 +32,8 @@ const client = await createConnection();
     response.send("hello World")
   });
 
-const port = 9000;
+// const port = 9000;
+const port=process.env.port;
 
 app.get("/movies", async(request, response) => {
   console.log(request.query);
