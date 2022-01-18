@@ -29,4 +29,11 @@ async function deleteMovieByID(id) {
     .deleteOne({ id: id });
 }
 
-export{getMoviesByName, createMovies, getMovieByID, deleteMovieByID};
+async function updateMovieByID(id, updatedMovie) {
+  return await client
+    .db("demo")
+    .collection("movies")
+    .updateOne({ id: id },{$set: updatedMovie});
+}
+
+export{getMoviesByName, createMovies, getMovieByID, deleteMovieByID, updateMovieByID};

@@ -1,5 +1,5 @@
 import express from "express";
-import {getMoviesByName, createMovies, getMovieByID, deleteMovieByID} from "../helper.js";
+import {getMoviesByName, createMovies, getMovieByID, deleteMovieByID, updateMovieByID} from "../helper.js";
 const router = express.Router();
 
 router.get("/", async(request, response) => {
@@ -38,6 +38,15 @@ router.get("/:id",  async(request, response) => {
 router.delete("/:id",  async(request, response) => {
     const {id} = request.params;
     const movie = await deleteMovieByID(id);
+    movie 
+        ? response.send(movie) 
+        : response.status(404).send({msg: "movies not found"});
+});
+
+router.put("/:id",  async(request, response) => {
+    const {id} = request.params;
+    const updatedMovie = request.body;
+    const movie = await updateMovieByID(id, updatedMovie);
     movie 
         ? response.send(movie) 
         : response.status(404).send({msg: "movies not found"});
