@@ -33,7 +33,7 @@ const client = await createConnection();
   });
 
 // const port = 9000;
-const port=process.env.port;
+const PORT=process.env.PORT;
 
 app.get("/movies", async(request, response) => {
   console.log(request.query);
@@ -78,4 +78,4 @@ movie
     : response.status(404).send({msg: "movies not found"});
 });
 
-app.listen(port,()=> console.log("the server is started", port))
+app.listen(PORT,()=> console.log("the server is started", PORT))
