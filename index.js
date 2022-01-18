@@ -13,7 +13,7 @@ console.log(process.env);
 
 const app = express();
 
-// app.use(express.json());//middleware-- intersept request and convert the same to JSON
+app.use(express.json());//middleware-- intersept request and convert the same to JSON
 
 const mongo_url = process.env.mongo_url;//hidding URL from GIT account
 
