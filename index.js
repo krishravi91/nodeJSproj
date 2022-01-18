@@ -5,6 +5,7 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import {moviesRouter} from "./routes/movies.js";
 
 dotenv.config();// getting all env keys
 
@@ -26,56 +27,19 @@ const mongo_url = process.env.mongo_url;//hidding URL from GIT account
   return client;
 }
  
-const client = await createConnection();
-
-  app.get("/",  (request, response) =>{
-    response.send("hello World")
-  });
+export const client = await createConnection();
 
 // const port = 9000;
 const PORT=process.env.PORT;
 
-app.get("/movies", async(request, response) => {
-  console.log(request.query);
-  // const {language,rating} = request.query;
-
-  //db.movies.find({"language":"Tamil"})
-
-  const filter = request.query;
-  if(filter.rating){
-    filter.rating = +filter.rating;
-  }
-
-  const movies = await client
-    .db("demo")
-    .collection("movies")
-    .find(filter)  
-    .toArray();
- 
-  response.send(movies);
+app.get("/",  (request, response) =>{
+    response.send("hello World")
 });
 
-app.post("/movies", express.json(), async (request, response) => {
-  
-  const data = request.body;
-  console.log("incoming data", data);
-
- const result = await client
-                  .db("demo")
-                  .collection("movies")
-                  .insertMany(data);
-    response.send(result);//comment
-});
-//11
-app.get("/movies/:id",  async(request, response) => {
-const {id} = request.params;
-const movie = await client
-    .db("demo")
-    .collection("movies")
-    .findOne({id:id});
-movie 
-    ? response.send(movie) 
-    : response.status(404).send({msg: "movies not found"});
-});
+app.use("/movies", moviesRouter);
 
 app.listen(PORT,()=> console.log("the server is started", PORT))
+
+
+
+
