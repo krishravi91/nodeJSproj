@@ -6,6 +6,8 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 import {moviesRouter} from "./routes/movies.js";
+import {usersRouter} from "./routes/users.js";
+import bcrypt from 'bcrypt';
 
 dotenv.config();// getting all env keys
 
@@ -38,7 +40,12 @@ app.get("/",  (request, response) =>{
 
 app.use("/movies", moviesRouter);
 
+app.use("/users", usersRouter);
+
 app.listen(PORT,()=> console.log("the server is started", PORT))
+
+
+
 
 
 
