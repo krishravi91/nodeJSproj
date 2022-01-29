@@ -1,27 +1,33 @@
 import express from "express";
 import {createUser,genPassword,getuserByName} from "../helper.js";
-import validator from 'validator';
+import bcrypt from 'bcrypt';
 const router = express.Router();
 
   
 router.post("/signup", async (request, response) => {
   
-    const {username,password} = request.body;
-    const name = await getuserByName(username);
+    const {username,password} = request.body;    
+    const userfromDB = await getuserByName(username);
 
-if(name>0)
+if(!userfromDB)
     {
-      console.log("Not a unique user Name");
-      // console.log(username);
-      return false;
-    }
-    else{
-      const hashedPassword = await genPassword(password);
-      const result =await createUser({
-      username:username,
-      password:hashedPassword});
-      response.send(result);
+      response.status(400).send({message:" Invalid Credentials"});
+      return;
     } 
+  
+const storedPassword = userfromDB.password;
+const isPasswordMatch = await bcrypt.compare(password,storedPassword);
+console.log(storedPassword);
+
+if(isPasswordMatch){
+
+} else{
+  response.status(401).send({message:" Invalid Credentials"});
+      return;
+}
+
+response.send(isPasswordMatch);
+    
 });
 
 // function validate(password) {
