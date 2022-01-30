@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import {moviesRouter} from "./routes/movies.js";
 import {usersRouter} from "./routes/users.js";
 import bcrypt from 'bcrypt';
+import cors from "cors";
 
 dotenv.config();// getting all env keys
 
@@ -16,6 +17,8 @@ console.log(process.env);
 const app = express();
 
 app.use(express.json());//middleware-- intersept request and convert the same to JSON
+
+app.use(cors());
 
 const mongo_url = process.env.mongo_url;//hidding URL from GIT account
 
@@ -41,6 +44,27 @@ app.get("/",  (request, response) =>{
 app.use("/movies", moviesRouter);
 
 app.use("/users", usersRouter);
+
+app.get("/recipes", async(request,response) => {
+  
+  const recipes = await client
+  .db("demo")
+  .collection("recipes")
+  .find({})
+  .toArray();
+
+  response.send(recipes);
+})
+
+app.post("/recipes", async(request,response) => {
+  const data = request.body;
+  const result = await client
+  .db("demo")
+  .collection("recipes")
+  .insertMany(data);
+
+  response.send(result);
+})
 
 app.listen(PORT,()=> console.log("the server is started", PORT))
 
